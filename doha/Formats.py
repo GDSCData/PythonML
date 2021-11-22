@@ -1,8 +1,13 @@
 from bs4 import BeautifulSoup
-import json
+import json, re
 import yaml
 import csv, codecs
 import openpyxl
+
+#정규식
+n='5.2n'
+re.match(r'^[0-9\.]+$', n)  # r 은 \n 같은 것을 무시하겠다는 것이고, ^은 무조건 시작이 저거여야한다는 것, $는 끝도 저거여야 한다는 것
+# 기본적으로 .은 모든 문자를 뜻하는데, . 자체를 인식하기 위에 \사용. \는 뒤에 있는 특수 문자를 그대로 인식한다는 뜻
 
 #xml
 savename = "forecast.xml"
