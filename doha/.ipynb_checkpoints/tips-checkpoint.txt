@@ -1,0 +1,2 @@
+그리드 서치 관련 링크: https://teddylee777.github.io/scikit-learn/grid-search-%EB%A1%9C-hyperparameter%EC%B5%9C%EC%A0%81%ED%99%94
+Feature Selection 관련 링크: https://machinelearningmastery.com/feature-selection-machine-learning-python/
