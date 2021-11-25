@@ -9,7 +9,7 @@ xor_df = pd.DataFrame(xor_input)
 data = xor_df.loc[:, 0:1]  # 전 구간, 0부터 1번 index 값이 데이터
 label = xor_df.loc[:, 2]  # 전 구간, 2번 index 값이 데이터
 data1 = [True, False]
-clf = svm.SVC()  # LinearSVC, LinearSVR 등도 있다. RandomForestClassifier 도 있다.
+clf = svm.SVC()  # LinearSVC, LinearSVR 등도 있다. RandomForestClassifier(n_jobs=-1 로 최대속도, max_depth 도 수정) 도 있다.
 clf.fit(data, label)  # 데이터와 답 넣기
 joblib.dump(clf, "freq.pkl")  # 파일로 데이터 저장하기
 pre = clf.predict(data1)  # data1으로 예측값 도출하기
@@ -26,7 +26,7 @@ train_data, test_data, train_label, test_label = \
     train_test_split(csv_data, csv_label) # 열 이름에 따라 분류해서 알아서 넣어준다.
 
 scores = model_selection.cross_val_score(clf, data, label, cv=5)  # 크로스 validation, 테스트 데이터와
-# train 데이터를 5등분 해가지고, 총 5반 다르게 설정해서 구한다. 같은 것을 5번 반복.
+# train 데이터를 5등분 해가지고, 총 5번 다르게 설정해서 구한다. 같은 것을 5번 반복.
 
 label = []
 data = []
