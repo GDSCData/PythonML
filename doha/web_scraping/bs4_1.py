@@ -1,3 +1,5 @@
+# 네이버 웹툰 모든 제목 가져와보기
+
 import requests
 from bs4 import BeautifulSoup
 url="https://comic.naver.com/webtoon/weekday"
