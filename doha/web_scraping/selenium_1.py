@@ -27,3 +27,5 @@ for movie in movies:
 print(len(movies))
 with open("movie.html","w",encoding="utf8") as f:
     f.write(soup.prettify())
+
+# 기타 간단한 문법 정보 들은 https://www.youtube.com/watch?v=yQ20jZwDjTE&t=15325s 4:24:00 부터.

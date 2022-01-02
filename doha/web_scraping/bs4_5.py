@@ -14,3 +14,6 @@ for movie in movies:
 print(len(movies))
 with open("movie.html","w",encoding="utf8") as f:
     f.write(soup.prettify())
+
+# requests 로 로그인 하기: https://coderedirect.com/questions/280864/how-to-simulate-a-button-click-in-a-request
+
