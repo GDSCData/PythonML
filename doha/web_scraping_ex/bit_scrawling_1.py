@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestRegressor
 today=datetime.date.today().strftime("%Y%m%d")
 headers={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/"
                       "537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"}
-url = 'https://api.finance.naver.com/siseJson.naver?symbol=005930&requestType=1&startTime=20100523&endTime={}&timeframe=day'.format(today)
+url = 'https://api.finance.naver.com/siseJson.naver?symbol=005930&requestType=1&startTime=20200523&endTime={}&timeframe=day'.format(today)
 res=requests.get(url)
 res.raise_for_status()
 soup=BeautifulSoup(res.text,'lxml')
