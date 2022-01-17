@@ -1,43 +1,36 @@
 import json
-import matplotlib.pyplot as plt
-import numpy as np
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
-from ast import literal_eval
 import datetime
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-import torch
-import torch.nn as nn
-from torch.autograd import Variable
-import torch.optim as optim
-from torch.utils.data import Dataset, DataLoader
 
 today = datetime.date.today().strftime("%Y%m%d")
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/"
                          "537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"}
-url_us = 'https://coronaboard.kr/generated/KR.json'
 url_kr = 'https://coronaboard.kr/generated/KR.json'
-url_jp = 'https://coronaboard.kr/generated/JP.json'
-url_CN = 'https://coronaboard.kr/generated/CN.json'
-url_CA = 'https://coronaboard.kr/generated/CA.json'
-url_DE = 'https://coronaboard.kr/generated/DE.json'
-res = requests.get(url_us)
+
+res = requests.get(url_kr)
 res.raise_for_status()
 soup = BeautifulSoup(res.text, 'lxml')
-US_dict = json.loads(soup.get_text())
-US_pd = pd.DataFrame(US_dict)
-US_pd.index = pd.to_datetime(US_pd["date"], format='%Y%m%d')
-US_pd = US_pd.drop(columns='date')
-print(US_dict.keys())
-print(US_pd.head(5))
-US_pd["critical"] = US_pd["critical"].fillna(0)
-US_pd["critical_acc"] = US_pd["critical_acc"].fillna(0)
-X = US_pd
-y = US_pd.iloc[:, 5:6]
-print(X.tail(5))
-print(y)
-# 'date', 'active', 'confirmed_acc', 'death_acc', 'released_acc', 'critical_acc', 'confirmed', 'death', 'released'
-# 날짜, 치료 중, 확진자 누적, 사망자 누적, 완치자 누적, ?, 확진자 일별, 사망자 일별, 완치자 일별
-
+KR_dict = json.loads(soup.get_text())
+KR_pd = pd.DataFrame(KR_dict)
+KR_pd.index = pd.to_datetime(KR_pd["date"], format='%Y%m%d')
+KR_pd = KR_pd.drop(columns='date')
+KR_data = KR_pd.iloc[:, 5:6]
+KR_data["-1"]=KR_pd.iloc[:, 5:6].shift(periods=1, fill_value=0)
+KR_data["-2"]=KR_pd.iloc[:, 5:6].shift(periods=2, fill_value=0)
+KR_data["-3"]=KR_pd.iloc[:, 5:6].shift(periods=3, fill_value=0)
+KR_data["-4"]=KR_pd.iloc[:, 5:6].shift(periods=4, fill_value=0)
+KR_data["-5"]=KR_pd.iloc[:, 5:6].shift(periods=5, fill_value=0)
+KR_data["-6"]=KR_pd.iloc[:, 5:6].shift(periods=6, fill_value=0)
+KR_data["-7"]=KR_pd.iloc[:, 5:6].shift(periods=7, fill_value=0)
+KR_data["-8"]=KR_pd.iloc[:, 5:6].shift(periods=8, fill_value=0)
+KR_test=KR_data.tail(1)
+KR_data.drop(KR_data.tail(1).index,inplace=True)
+X=KR_data[["-1","-2","-3","-4","-5","-6","-7"]]
+y = KR_data['confirmed']
+model1=RandomForestRegressor(n_estimators=1000,max_depth=20,max_features='sqrt',min_samples_split=0.0005,n_jobs=-1)
+model1.fit(X,y)
+pre=model1.predict(KR_test[-1:][["-1","-2","-3","-4","-5","-6","-7"]])
+print(pre)
